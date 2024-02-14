@@ -14,8 +14,10 @@ int lowest_match(struct term *terms, int nterms, char *substr){
     
 }
 int highest_match(struct term *terms, int nterms, char *substr){
+
+}
+void autocomplete(struct term **answer, int *n_answer, struct term *terms, int nterms, char *substr){
     
 }
-void autocomplete(struct term **answer, int *n_answer, struct term *terms, int nterms, char *substr);
 
 #endif
