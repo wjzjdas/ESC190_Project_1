@@ -21,6 +21,7 @@ void read_in_terms(struct term **terms, int *pnterms, char *filename){
     fclose(file);
     qsort(*terms, *pnterms, sizeof(term), string_compare);
 }
+
 int lowest_match(struct term *terms, int nterms, char *substr){
     int min = 0;
     int max = nterms - 1;
