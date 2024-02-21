@@ -10,11 +10,39 @@ typedef struct term{
 
 //Test
 void read_in_terms(struct term **terms, int *pnterms, char *filename){
-
+    //open the files
+    FILE *file = fopen(filename, "r");
+    fscanf(file, "%d\n", pnterms);
+    // create spaces of memory for each term
+    *terms = (term *)malloc(*pnterms * sizeof(term));
+    for (int i = 0; i < *pnterms; i++){
+        fscanf(file, "%lf\t%[^\n]", &((*terms)[i].weight), (*terms)[i].term);
+    }
+    fclose(file);
+    qsort(*terms, *pnterms, sizeof(term), string_compare);
 }
 int lowest_match(struct term *terms, int nterms, char *substr){
-    
+    int min = 0;
+    int max = nterms - 1;
+    int final_index = -1;
+    int str_len = strlen(substr);
+
+    while (min < max){ //by binary search and each compares the term for their first 3 letters similarity
+        int mid = min + (max - min) / 2;
+        int compare = strncmp(terms[mid].term, substr, str_len);
+        if (compare >= 0){
+            max = mid - 1;
+            if (compare == 0){
+                final_index = mid;
+            }
+        }
+        else{
+            min = mid + 1;
+        }
+    }
+    return final_index;
 }
+
 int highest_match(struct term *terms, int nterms, char *substr){
     int index = -1;
 
