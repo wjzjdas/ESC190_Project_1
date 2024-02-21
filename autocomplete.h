@@ -50,6 +50,7 @@ int highest_match(struct term *terms, int nterms, char *substr){
     //For Binary Searching
     int min = 0;
     int max = nterms - 1;
+    int len = strlen(substr);
 
     // min <= max because we are finding the highest match, so we must continue the loop until compare goes from 0 to positive
     while (min <= max){ 
@@ -60,7 +61,7 @@ int highest_match(struct term *terms, int nterms, char *substr){
 
         char temp[200];
         strcpy(temp, terms[mid].term); 
-        int len = strlen(substr);
+
         int compare = strcmp(substr, temp); // -1, 0, 1
 
 
