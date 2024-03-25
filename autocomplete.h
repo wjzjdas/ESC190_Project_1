@@ -78,8 +78,42 @@ int highest_match(struct term *terms, int nterms, char *substr){
     }
     return index;
 }
-void autocomplete(struct term **answer, int *n_answer, struct term *terms, int nterms, char *substr){
+int weight_compare(const void *weightA, const void *weightB){
+    const term *weight1 = (const term*)weightA;
+    const term *weight2 = (const term*)weightB; 
+    if (weight1 -> weight < weight2 -> weight){ // first smaller than second, should do qsort
+        return 1;
+    }
+    else if (weight1->weight > weight2 -> weight){ // first smaller than second, in non-increasing order
+        return -1;
+    }
+    else{ // two term weight are equal
+        return 0;
+    }
+}
 
+void autocomplete(term **answer, int *n_answer, term *terms, int nterms, char *substr){
+    /*The function takes terms (assume it is sorted lexicographically in increasing order), the number
+of terms nterms, and the query string substr, and places the answers in answer, with *n_answer
+being the number of answers. The answers should be sorted by weight in non-increasing order.*/
+
+    // find the start of the search in the file for substr using binary search
+    int start_index = lowest_match(terms, nterms, substr);
+    int end_index = highest_match(terms, nterms, substr);
+    // check if there is no similar word found in list in terms wrt substr
+    if (start_index == -1 || end_index == -1){
+        *n_answer = 0;
+        *answer = NULL;
+    }
+
+    *n_answer = end_index - start_index + 1;
+    // places the answer in *answer pointer to store the memory address of the value
+    *answer = (term *)malloc(*n_answer * sizeof(term));
+    for (int i = 0; i < *n_answer; i++)
+    {
+      (*answer)[i] = terms[start_index + i];
+    }
+    qsort(*answer, *n_answer, sizeof(term), weight_compare);
 }
 
 #endif
