@@ -137,7 +137,3 @@ being the number of answers. The answers should be sorted by weight in non-incre
     }
     qsort(*answer, *n_answer, sizeof(term), weight_compare);
 }
-
-int main(){
-  return 0;
-}
